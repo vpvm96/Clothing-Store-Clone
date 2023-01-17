@@ -6,6 +6,7 @@ import ProductsDetail from "../pages/ProductsDetail"
 import MyCart from "../pages/MyCart"
 import NotFound from "../pages/NotFound"
 import Header from "../pages/Header"
+import ProteactedRoute from "../pages/ProtectedRoute"
 
 const Router = () => {
   return (
@@ -14,9 +15,23 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<AllProducts />} />
-        <Route path="/products/new" element={<NewProducts />} />
+        <Route
+          path="/products/new"
+          element={
+            <ProteactedRoute requireAdmin>
+              <NewProducts />
+            </ProteactedRoute>
+          }
+        />
         <Route path="/products/:id" element={<ProductsDetail />} />
-        <Route path="/cart" element={<MyCart />} />
+        <Route
+          path="/cart"
+          element={
+            <ProteactedRoute>
+              <MyCart />
+            </ProteactedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
