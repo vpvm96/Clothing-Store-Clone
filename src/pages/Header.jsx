@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
 import {
   firebaseGoogleLoginService,
   firebaseLogoutService,
-  firebaseUserStateChange,
 } from "../apis/firebaseService"
 import User from "../components/User"
 import Icon from "../assets/icons/icon"
+import Button from "../components/ui/Button"
+import { useAuthContext } from "../components/context/AuthContext"
 
 const Header = () => {
-  const [user, setUser] = useState()
-
-  useEffect(() => {
-    firebaseUserStateChange(setUser)
-  }, [])
+  const { user, login, logout } = useAuthContext()
 
   return (
     <header className="flex justify-between border-b border-gray-300 p-2">
@@ -23,13 +20,15 @@ const Header = () => {
       </Link>
       <nav className="flex items-center gap-4 font-semibold">
         <Link to="/products">Products</Link>
-        <Link to="/carts">Carts</Link>
-        <Link to="/products/new" className="text-2xl">
-          <Icon name="newProduct" />
-        </Link>
+        {user && <Link to="/carts">Carts</Link>}
+        {user && user.isAdmin && (
+          <Link to="/products/new" className="text-2xl">
+            <Icon name="newProduct" />
+          </Link>
+        )}
         {user && <User user={user} />}
-        {!user && <button onClick={firebaseGoogleLoginService}>Login</button>}
-        {user && <button onClick={firebaseLogoutService}>Logout</button>}
+        {!user && <Button text="Login" onClick={firebaseGoogleLoginService} />}
+        {user && <Button text="Logout" onClick={firebaseLogoutService} />}
       </nav>
     </header>
   )
