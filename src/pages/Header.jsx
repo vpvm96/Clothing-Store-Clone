@@ -1,13 +1,9 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import {
-  firebaseGoogleLoginService,
-  firebaseLogoutService,
-} from "../apis/firebaseService"
+import { useAuthContext } from "../components/context/AuthContext"
 import User from "../components/User"
 import Icon from "../assets/icons/icon"
 import Button from "../components/ui/Button"
-import { useAuthContext } from "../components/context/AuthContext"
 
 const Header = () => {
   const { user, login, logout } = useAuthContext()
@@ -27,8 +23,8 @@ const Header = () => {
           </Link>
         )}
         {user && <User user={user} />}
-        {!user && <Button text="Login" onClick={firebaseGoogleLoginService} />}
-        {user && <Button text="Logout" onClick={firebaseLogoutService} />}
+        {!user && <Button text="Login" onClick={login} />}
+        {user && <Button text="Logout" onClick={logout} />}
       </nav>
     </header>
   )
