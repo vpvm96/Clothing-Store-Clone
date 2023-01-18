@@ -5,7 +5,7 @@ import { useAuthContext } from "../components/context/AuthContext"
 const ProteactedRoute = ({ children, requireAdmin }) => {
   const { user } = useAuthContext()
 
-  if (!user || (requireAdmin && !user.admin)) {
+  if (!user || (requireAdmin && !user.isAdmin)) {
     return <Navigate to="/" replace />
   }
 
