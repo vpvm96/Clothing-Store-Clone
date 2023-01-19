@@ -25,7 +25,7 @@ const Router = () => {
         />
         <Route path="/products/:id" element={<ProductsDetail />} />
         <Route
-          path="/cart"
+          path="/carts"
           element={
             <ProteactedRoute>
               <MyCart />
