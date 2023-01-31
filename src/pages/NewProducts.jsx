@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { firebaseAddNewProduct } from "../apis/firebaseService"
 import { uploadImage } from "../apis/uploader"
 import Button from "../components/ui/Button"
@@ -9,18 +10,30 @@ const NewProducts = () => {
   const [isUploading, setIsUploading] = useState(false)
   const [success, setSuccess] = useState()
 
+  const queryClinet = useQueryClient()
+  const addProduct = useMutation(
+    ({ product, url }) => firebaseAddNewProduct(product, url),
+    {
+      onSuccess: () => queryClinet.invalidateQueries(["products"]),
+    }
+  )
+
   const handleFormSubmit = (e) => {
     e.preventDefault()
     setIsUploading(true)
     uploadImage(file)
       .then((url) => {
-        console.log(url)
-        firebaseAddNewProduct(product, url).then(() => {
-          setSuccess("성공적으로 제품이 추가되었습니다.")
-          setTimeout(() => {
-            setSuccess(null)
-          }, 4000)
-        })
+        addProduct.mutate(
+          { product, url },
+          {
+            onSuccess: () => {
+              setSuccess("성공적으로 제품이 추가되었습니다.")
+              setTimeout(() => {
+                setSuccess(null)
+              }, 4000)
+            },
+          }
+        )
       })
       .finally(() => setIsUploading(false))
   }
