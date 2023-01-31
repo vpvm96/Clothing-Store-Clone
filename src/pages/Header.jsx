@@ -1,9 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { useAuthContext } from "../components/context/AuthContext"
+import { useAuthContext } from "../context/AuthContext"
 import User from "../components/User"
 import Icon from "../assets/icons/icon"
 import Button from "../components/ui/Button"
+import CartStatus from "../components/CartStatus"
 
 const Header = () => {
   const { user, login, logout } = useAuthContext()
@@ -16,7 +17,11 @@ const Header = () => {
       </Link>
       <nav className="flex items-center gap-4 font-semibold">
         <Link to="/products">Products</Link>
-        {user && <Link to="/carts">Carts</Link>}
+        {user && (
+          <Link to="/carts">
+            <CartStatus />
+          </Link>
+        )}
         {user && user.isAdmin && (
           <Link to="/products/new" className="text-2xl">
             <Icon name="newProduct" />
