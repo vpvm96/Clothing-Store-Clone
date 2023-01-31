@@ -8,7 +8,7 @@ const Products = () => {
     isLoading,
     error,
     data: products,
-  } = useQuery(["products"], firebaseGetProducts)
+  } = useQuery(["products"], firebaseGetProducts, { staleTime: 1000 * 60 })
 
   return (
     <>
