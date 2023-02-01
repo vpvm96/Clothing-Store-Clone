@@ -11,7 +11,7 @@ export function AuthContextProvider({ children }) {
   const [user, setUser] = useState()
 
   useEffect(() => {
-    firebaseUserStateChange(setUser)
+    firebaseUserStateChange((user) => setUser(user))
   }, [])
   return (
     <AuthContext.Provider
