@@ -1,8 +1,7 @@
 import React, { useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { firebaseAddNewProduct } from "../apis/firebaseService"
 import { uploadImage } from "../apis/uploader"
 import Button from "../components/ui/Button"
+import useProducts from "../hooks/useProducts"
 
 const NewProducts = () => {
   const [product, setProduct] = useState({})
@@ -10,13 +9,7 @@ const NewProducts = () => {
   const [isUploading, setIsUploading] = useState(false)
   const [success, setSuccess] = useState()
 
-  const queryClinet = useQueryClient()
-  const addProduct = useMutation(
-    ({ product, url }) => firebaseAddNewProduct(product, url),
-    {
-      onSuccess: () => queryClinet.invalidateQueries(["products"]),
-    }
-  )
+  const { addProduct } = useProducts()
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
